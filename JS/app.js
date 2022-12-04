@@ -65,7 +65,7 @@ function getImages() {
     //Iterate through the returned records and build HTML, incorporating the key values of the record in the data
     $.each(data, function (key, val) {
       items.push("<hr />");
-      items.push('<button  id = "EditImages" type="button" onClick = "editImages()"class="btn btn-primary"> Edit Images </button>');
+      items.push('<button  id = "EditImages" type="button" onClick = "getUser()"class="btn btn-primary"> Edit Images </button>');
       items.push('<script>function myFunction() {var x = document.getElementById("EditImages");console.log("Test")}</script>');
       items.push("File : " + val["fileName"] + "<br />");
       items.push("Uploaded by: " + val["userName"] + " (user id: " + val["userID"] + ")");
