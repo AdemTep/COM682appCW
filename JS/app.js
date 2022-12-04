@@ -86,6 +86,6 @@ function getImages() {
 }
 
 function editImages(){
-  console.log();
+  console.log("Test");
 }
 
