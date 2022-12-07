@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en" ng-app="Dashboard">
+  <head>
+    <style>
+      /* Style the tab */
+.tab {
+  overflow: hidden;
+  border: 1px solid #ccc;
+  background-color: #f1f1f1;
+}
+
+/* Style the buttons inside the tab */
+.tab button {
+  background-color: inherit;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+  font-size: 17px;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+  background-color: #ddd;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+  background-color: #ccc;
+}
+
+/* Style the tab content */
+.tabcontent {
+  display: none;
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  border-top: none;
+}
+    </style> 
+    <meta charset="UTF-8">
+
+    <title>Asset Track</title>
+
+      <link rel="stylesheet" type="text/css" href="CSS/bootstrap.min.css">
+      <script type="text/javascript" src="JS/bootstrap.js"></script>
+      <script type="text/javascript" src="JS/bootstrap.bundle.min.js"></script>
+      <script type="text/javascript" src="JS/jquery-3.6.0.min.js"></script>
+
+      <script type="text/javascript" src="JS/app.js"></script>
+
+  </head>
+  
+  <body>
+    <div class="tab">
+      <button class="tablinks" onclick="window.location = 'Login.html'">Login</button>
+      <button class="tablinks" onclick="">View Videos</button>
+      <button class="tablinks" onclick="window.location = 'index.html'">Add Videos</button>
+      <button class="tablinks" onclick=""><b>View Users</b></button>
+    </div>
+
+    <div  class="container">
+
+        <!--Header-->
+        <div class="row align-items-start">
+            <div class="col-2"  ></div>
+
+            <div class="col-8" style="text-align: center;">
+              <h3>Users</h3>
+            </div>
+
+            <div class="col-2"  ></div>
+        </div>
+        <!-- view Asset Area-->
+        <div class="row align-items-start">
+            <div class="col-2"  ></div>
+
+            <div class="col-8" style="text-align: left;" >
+              <div style="padding:5px;">
+                <button  id = "viewUsers" type="button" class="btn btn-primary">View Users</button>
+              </div>
+
+              <div id="userList">
+
+                <h4>Please click the view Users button if you wish to view images on the system.</h4>
+
+              </div>
+            </div>
+
+            <div class="col-2"  ></div>
+        </div>
+
+    </div>
+  
+  </body>
+</html>
+
