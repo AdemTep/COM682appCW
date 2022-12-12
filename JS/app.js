@@ -7,6 +7,9 @@ userLogin = "https://prod-53.eastus.logic.azure.com/workflows/deeba3f2c93c4a6a8c
 getAllUsers = "https://prod-00.centralus.logic.azure.com/workflows/26e5f4347b394dc79f02a391008cf4a9/triggers/manual/paths/invoke/rest/v1/users?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=msdtEehX7Oiv9FohqeXtJuKVQRAlf5pK0BWOKKqMi0k"
 deleteUserFirst = "https://prod-05.eastus.logic.azure.com/workflows/aa88c0e0969c47fa888074cec092568f/triggers/manual/paths/invoke/rest/v1/user/"
 deleteUserSecond = "?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=TKvM3BBJ8WFzhBICRFcuZbA6mei_aztu46yo5qL5cIk"
+editRatingFirst = "https://prod-16.eastus.logic.azure.com/workflows/376f6e3f7da24ec496beb0d9c292076c/triggers/manual/paths/invoke/rest/v1/video/"
+editRatingSecond = "?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=rjHeBmoOCEaRTN33T7i9DtzolhlJoduPJAsvoNJW_gE"
+
 
 BLOB_ACCOUNT = "https://blobstoragecom682tep.blob.core.windows.net";
 
@@ -20,8 +23,7 @@ $(document).ready(function () {
     getImages();
 
   });
-
-  $("#EditImages").click(function () {
+  $("#DeleteImages").click(function () {
     try{
       getUserInfo().then(result => {
         clientInfo = result
@@ -32,13 +34,39 @@ $(document).ready(function () {
           console.log("You have the authorization to use this.")
           deleteVideo();
         }
-      
+        else{
+          console.log("You dont have the authorization to use this.");
+        }
       })
     }
     catch(TypeError){
       console.log(TypeError)
     }
-    editImages();
+  
+  });
+
+
+  $("#videoPage").click(function () {
+    try{
+      getUserInfo().then(result => {
+        clientInfo = result
+        console.log(clientInfo);
+        userRoles = clientInfo['userRoles']
+        console.log(userRoles);
+        if(userRoles.includes('admin')){
+          window.location = 'view_Videos.html';
+          console.log("You have the authorization to use this.")
+          deleteVideo();
+        }
+        else{
+          console.log("You dont have the authorization to use this.");
+        }
+      })
+    }
+    catch(TypeError){
+      console.log(TypeError)
+    }
+    //editImages();
   });
 
   $("#viewUsers").click(function () {
@@ -101,9 +129,11 @@ function getImages() {
     $.each(data, function (key, val) {
       var datatest = 0;
       items.push("<li id = 'Test'> <hr />");
-      items.push("<button  id = EditImages type=button onClick=deleteVideo('"+ val["id"] +"') class='btn btn-primary'> Edit Images </button> <br />");
+      items.push("<button  id = DeleteImages type=button onClick=deleteVideo('"+ val["id"] +"') class='btn btn-primary'> Delete Video </button> <br />");
       items.push('<script>function myFunction() {var x = document.getElementById("EditImages");console.log("Test")}</script>');
       items.push("File : " + val["fileName"] + "<br />");
+      items.push("<button  id = EditImages type=button onClick=editRating('"+ val["id"] +"') class='btn btn-primary'> Edit Video </button>");
+      items.push("<label for='ratings'>Rate Video:</label><select name='ratings' id='ratings'><option value='one'>1</option><option value='two'>2</option><option value='three'>3</option><option value='four'>4</option><option value='five'>5</option></select> <br />");
       items.push("Uploaded by: " + val["producer"] + " (user id: " + val["userID"] + ") <br />");
       items.push("<video src='" + BLOB_ACCOUNT + val["filepath"] +  "'type=video/mp4 controls='controls autoplay' width='500' /> </video><br />")
       items.push("<hr /> </li>");
@@ -135,7 +165,7 @@ function getAssetList() {
       items.push("Address Line 1: " + val["addressLine1"] + "<br/>");
       items.push("Address Line 2: " + val["addressLine2"] + "<br/>");
       items.push("Phone Number: " + val["phoneNumber"] + "<br/>");
-      items.push('<button type="button" id="subNewForm" class="btn btn-primary" onclick="deleteUser(' + val["adminUser"] + ')">Delete</button> <br/><br/>');
+      items.push('<button type="button" id="subNewForm" class="btn btn-primary" onclick="deleteUser(' + val["userID"] + ')">Delete</button> <br/><br/>');
       items.push("<hr />")
     });
     //Clear the assetlist div
@@ -150,12 +180,12 @@ function getAssetList() {
 function submitNewUser(){
   //Construct JSON Object for new item
   var subObj = {
-  fName: $('#FName').val(),
-  lName: $('#LName').val(),
-  userName: $('#userName').val(),
-  address1: $('#address1').val(),
-  address2: $('#address2').val(),
-  phoneNum: $('#phoneNum').val(),
+    fName: $('#FName').val(),
+    lName: $('#LName').val(),
+    userName: $('#userName').val(),
+    addressLine1: $('#address1').val(),
+    addressLine2: $('#address2').val(),
+    phoneNumber: $('#phoneNum').val(),
   }
   //Convert to a JSON String
   subObj = JSON.stringify(subObj);
@@ -186,6 +216,7 @@ function deleteVideo(id){
   $('#Test').remove();
 }
 
+
 async function getUserInfo() {
   const response = await fetch('/.auth/me');
   const payload = await response.json();
@@ -209,4 +240,24 @@ function deleteUser(id){
     });
   //Delete the selected video from the asset list
   //$('#Test').remove();
+}
+function editRating(id) {
+
+  submitData = new FormData();
+  //Get form variables and append them to the form data object
+  submitData.append('rating', $('#ratings').val());
+
+  //Post the form data to the endpoint, note the need to set the content type header
+  $.ajax({
+    url: editRatingFirst + id + editRatingSecond,
+    data: submitData,
+    cache: false,
+    enctype: 'multipart/form-data',
+    contentType: false,
+    processData: false,
+    type: 'PUT',
+    success: function (data) {
+
+    }
+  });
 }
