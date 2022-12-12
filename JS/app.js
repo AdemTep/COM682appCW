@@ -24,47 +24,12 @@ $(document).ready(function () {
 
   });
   $("#DeleteImages").click(function () {
-    try{
-      getUserInfo().then(result => {
-        clientInfo = result
-        console.log(clientInfo);
-        userRoles = clientInfo['userRoles']
-        console.log(userRoles);
-        if(userRoles.includes('admin')){
-          console.log("You have the authorization to use this.")
-          deleteVideo();
-        }
-        else{
-          console.log("You dont have the authorization to use this.");
-        }
-      })
-    }
-    catch(TypeError){
-      console.log(TypeError)
-    }
   
   });
 
 
   $("#videoPage").click(function () {
-    try{
-      getUserInfo().then(result => {
-        clientInfo = result
-        console.log(clientInfo);
-        userRoles = clientInfo['userRoles']
-        console.log(userRoles);
-        if(userRoles.includes('admin')){
-          window.location = 'view_Videos.html';
-          console.log("You have the authorization to use this.")
-        }
-        else{
-          console.log("You dont have the authorization to use this.");
-        }
-      })
-    }
-    catch(TypeError){
-      console.log(TypeError)
-    }
+    window.location = 'view_Videos.html';
     //editImages();
   });
 
