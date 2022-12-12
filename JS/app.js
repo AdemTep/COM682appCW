@@ -56,7 +56,6 @@ $(document).ready(function () {
         if(userRoles.includes('admin')){
           window.location = 'view_Videos.html';
           console.log("You have the authorization to use this.")
-          deleteVideo();
         }
         else{
           console.log("You dont have the authorization to use this.");
@@ -201,19 +200,27 @@ function submitNewUser(){
 
 function deleteVideo(id){
   console.log(id);
-  if(id == ""){
-
-  }
-  $.ajax({
-    type: "DELETE",
-    //Note the need to concatenate the
-    url: deleteVideoFirst + id + deleteVideoSecond,
-    }).done(function( msg ) {
-    //On success, update the assetlist.
-    getImages();
-    });
-  //Delete the selected video from the asset list
-  $('#Test').remove();
+  getUserInfo().then(result => {
+    clientInfo = result
+    console.log(clientInfo);
+    userRoles = clientInfo['userRoles']
+    console.log(userRoles);
+    if(userRoles.includes('admin')){
+      $.ajax({
+        type: "DELETE",
+        //Note the need to concatenate the
+        url: deleteVideoFirst + id + deleteVideoSecond,
+        }).done(function( msg ) {
+        //On success, update the assetlist.
+        getImages();
+        });
+      //Delete the selected video from the asset list
+      $('#Test').remove();
+    }
+    else{
+      console.log("You dont have the authorization to use this.");
+    }
+  })
 }
 
 
@@ -226,18 +233,34 @@ async function getUserInfo() {
 }
 
 function deleteUser(id){
-  console.log(id);
-  if(id == ""){
-
-  }
-  $.ajax({
-    type: "DELETE",
+  getUserInfo().then(result => {
+    clientInfo = result
+    console.log(clientInfo);
+    userRoles = clientInfo['userRoles']
+    console.log(userRoles);
+    if(userRoles.includes('admin')){
+      console.log("You have the authorization to use this.")
+      $.ajax({
+        type: "DELETE",
+        //Note the need to concatenate the
+        url: deleteUserFirst + id + deleteUserSecond,
+        }).done(function( msg ) {
+        //On success, update the assetlist.
+        getAssetList();
+        });
+    }
+    else{
+      console.log("You dont have the authorization to use this.");
+    }
+  })
+  //$.ajax({
+    //type: "DELETE",
     //Note the need to concatenate the
-    url: deleteUserFirst + id + deleteUserSecond,
-    }).done(function( msg ) {
+    //url: deleteUserFirst + id + deleteUserSecond,
+    //}).done(function( msg ) {
     //On success, update the assetlist.
-    getAssetList();
-    });
+    //getAssetList();
+    //});
   //Delete the selected video from the asset list
   //$('#Test').remove();
 }
